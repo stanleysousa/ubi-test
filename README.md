@@ -95,7 +95,7 @@ Find the IPv4Address for the running container, it is **172.17.0.2** in the exam
         },
 ```
 
-Update the **ConnectionString** on **appsettings.json** file located at **web-service\Inventory\Inventory.Service**
+Update the **ConnectionString** on **appsettings.json** file located at **backend\Inventory.Service**
 ```
   "Config": {
     "ConnectionString": "Server=172.17.0.2;port=3306;Database=Inventory;userid=user;Password=user"
@@ -104,6 +104,6 @@ Update the **ConnectionString** on **appsettings.json** file located at **web-se
 
 ## Launch the application
 
-- Open the **Inventory** solution located at **web-service\Inventory** on Visual Studio Solution 
+- Open the **Inventory** solution located at **backend** on Visual Studio Solution 
 - Press start (F5) to run on Docker
 - It should launch SwaggerUI automatically on **http://localhost:49159/TestDevWebService/services/index.html**
