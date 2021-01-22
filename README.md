@@ -11,20 +11,20 @@ To follow this guide you need:
 - [Visual Studio 2019](https://visualstudio.microsoft.com)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop), otherwise you might need to adapt the steps to your Docker environment.
 
-# 1 - Database
+# 1 - Backend-Database
 
 ## Creating the database image:
 
-Open the command line on the "database" folder and execute
+Open the command line on the **backend-database** folder and execute
 ```sh
-$ docker build -t inventory-db .
+$ docker build -t backend-db .
 ```
 
 ## Running database container:
 
- Open the command line on the "database" folder and execute
+ Open the command line on the **backend-database** folder and execute
 ```sh
-$ docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=Inventory -e MYSQL_USER=user -e MYSQL_PASSWORD=user inventory-db
+$ docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=Inventory -e MYSQL_USER=user -e MYSQL_PASSWORD=user backend-db
 ```
 
 Note that the following environment variables defines database's settings and its value can be changed as desired:
@@ -111,3 +111,44 @@ Update the **ConnectionString** on **appsettings.json** file located at **backen
 - Open the **Inventory** solution located at **backend** on Visual Studio Solution 
 - Press start (F5) to run on Docker
 - It should launch SwaggerUI automatically on **http://localhost:49159/TestDevWebService/services/index.html**
+
+# 3 - Frontend-DatabaseDatabase
+
+## Creating the database image:
+
+Open the command line on the **frontend-database** folder and execute
+```sh
+$ docker build -t frontend-db .
+```
+
+## Running database container:
+
+ Open the command line on the **frontend-database** folder and execute
+```sh
+$ docker run -d -p 3307:3307 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=Inventory -e MYSQL_USER=user -e MYSQL_PASSWORD=user frontend-db
+```
+
+Note that the following environment variables defines database's settings and its value can be changed as desired:
+>MYSQL_ROOT_PASSWORD
+>MYSQL_DATABASE
+>MYSQL_USER
+>MYSQL_PASSWORD
+
+## Verifying that the database is working:
+Open the command line on the 'database' folder, get the database image id, run the image and enter it's bash
+```sh
+$ docker ps
+$ docker exec -it image_id bash
+```
+
+Once connected to the container's bash, open mysql:
+```sh
+$ mysql -uroot -proot
+```
+
+Explore the current database the check that the tables have been created and loaded with some data
+```
+SHOW DATABASES
+use Inventory
+select * from user;
+```
