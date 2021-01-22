@@ -1,6 +1,10 @@
 # General information
 
-This repository consists of 3 components, all of then running on Docker.
+This repository consists of 4 components, all of then running on Docker.
+1. Backend-Database
+2. Backend-App
+3. Frontend-Database
+4. Frontend-App
 
 To follow this guide you need:
 - [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet-core/3.1)
