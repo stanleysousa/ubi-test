@@ -34,7 +34,7 @@ Note that the following environment variables defines database's settings and it
 >MYSQL_PASSWORD
 
 ## Verifying that the database is working:
-Open the command line on the 'database' folder, get the database image id, run the image and enter it's bash
+Open the command line on the **backend-database** folder, get the database image id, run the image and enter it's bash
 ```sh
 $ docker ps
 $ docker exec -it image_id bash
@@ -52,7 +52,7 @@ use Inventory
 select * from user;
 ```
 
-# 2 - Backend
+# 2 - Backend-App
 
 ## Set database connection:
 
@@ -99,7 +99,7 @@ Find the IPv4Address for the running container, it is **172.17.0.2** in the exam
         },
 ```
 
-Update the **ConnectionString** on **appsettings.json** file located at **backend\Inventory.Service**
+Update the **ConnectionString** on **appsettings.json** file located at **backend-app\Inventory.Service**
 ```
   "Config": {
     "ConnectionString": "Server=172.17.0.2;port=3306;Database=Inventory;userid=user;Password=user"
@@ -108,11 +108,11 @@ Update the **ConnectionString** on **appsettings.json** file located at **backen
 
 ## Launch the application
 
-- Open the **Inventory** solution located at **backend** on Visual Studio Solution 
+- Open the **Inventory** solution located at **backend-app** on Visual Studio Solution 
 - Press start (F5) to run on Docker
 - It should launch SwaggerUI automatically on **http://localhost:49159/TestDevWebService/services/index.html**
 
-# 3 - Frontend-DatabaseDatabase
+# 3 - Frontend-Database
 
 ## Creating the database image:
 
@@ -135,7 +135,7 @@ Note that the following environment variables defines database's settings and it
 >MYSQL_PASSWORD
 
 ## Verifying that the database is working:
-Open the command line on the 'database' folder, get the database image id, run the image and enter it's bash
+Open the command line on the **frontend-database** folder, get the database image id, run the image and enter it's bash
 ```sh
 $ docker ps
 $ docker exec -it image_id bash
@@ -152,3 +152,61 @@ SHOW DATABASES
 use Inventory
 select * from user;
 ```
+
+# 4 - Frontend-App
+
+## Set database connection:
+
+Check the database IP
+
+```sh
+$ docker network inspect bridge
+```
+Find the IPv4Address for the running container, it is **172.17.0.3** in the example below
+```
+        "Containers": {
+            "13f019c6fca5311e59abf6eda936b884eb438657b84f64312cb9afe4c710741a": {
+                "Name": "InventoryUI.Presentation",
+                "EndpointID": "b23d05c273a2deee110a55dd10905928aef8579741ab8a8d5f8f638dc6466f7f",
+                "MacAddress": "02:42:ac:11:00:04",
+                "IPv4Address": "172.17.0.4/16",
+                "IPv6Address": ""
+            },
+            "aa0632b4bba9f9102e80401d6ea00d41aa1b6ceb42b4c23b90a945dc1e5a167b": {
+                "Name": "Inventory.Service",
+                "EndpointID": "bc962b3939bfcbdcb84aee3d77be934344d82c24ef5bfaaab9b44afb31f67cf7",
+                "MacAddress": "02:42:ac:11:00:05",
+                "IPv4Address": "172.17.0.5/16",
+                "IPv6Address": ""
+            },
+            "dce98debd1d7d2f91aef336d80e3737864741e0f2018181ff23567c7ec456a41": {
+                "Name": "eager_meitner",
+                "EndpointID": "8a75e0b334ce3699b98d11c4af61326e0b6c27674557222e377172da18ceeada",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            },
+            "dff7e448c744a887d8438e9468180697d06b5fc482bc23e3586a2e07a7ae3bb5": {
+                "Name": "bold_ramanujan",
+                "EndpointID": "be79dd9a16743267c51ee8972ac94cbe77b6778bdb9dd31d05c78a8b600afef6",
+                "MacAddress": "02:42:ac:11:00:03",
+                "IPv4Address": "172.17.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+```
+
+- Update the **ConnectionString** on **appsettings.json** file located at **frontend-app\Inventory.Presentation**
+- Check if the **UserServiceURL** port matches the port where the backend service is running on your container
+```
+  "Config": {
+    "ConnectionString": "Server=172.17.0.3;port=3306;Database=Inventory;userid=user;Password=user",
+    "UserServiceURL": "http://host.docker.internal:49163/TestDevWebService/services/User/"
+  },
+```
+
+## Launch the application
+
+- Open the **InventoryUI** solution located at **frontend-app** on Visual Studio Solution 
+- Press start (F5) to run on Docker
+- It should launch the AspNet page automatically on **http://localhost:49162/**

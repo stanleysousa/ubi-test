@@ -1,0 +1,31 @@
+﻿@model List<InventoryUI.Infrastructure.Entity.User>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<link rel="stylesheet" href="~/css/json-viewer.css" />
+
+<div class="text-center">
+    <h1 class="display-4">Items in user inventory</h1>
+</div>
+
+<div id="json">@ViewData["Items"]</div>
+
+<script src="~/js/json-viewer.js" asp-append-version="true"></script>
+
+
+
+@section scripts {
+    <script type="text/javascript">
+
+        function Format(name) {
+            var jsonViewer = new JSONViewer();
+            document.querySelector("#json").appendChild(jsonViewer.getContainer());
+        }
+
+    </script>
+}
+
+
+
